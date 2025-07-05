@@ -7,14 +7,22 @@ import { useToast } from 'primevue/usetoast'
 import { formatDatetime } from '@/utils/date-time-format.utility.ts'
 import Button from 'primevue/button'
 import { useInstancesStore } from '@/store/instancesStore.ts'
+import DetailsDialog from '@/components/DetailsDialog.vue'
 
+interface Props {
+  data: any | null;
+}
+
+const props = defineProps<Props>()
 const generalStore = useGeneralStore()
 const dialogs = useDialogStore()
 const instancesStore = useInstancesStore()
 const toast = useToast()
 
+const versionData = ref(props.data)
+
 const onHide = () => {
-  generalStore.clearSelectedEntity()
+  forActive.value = null
 }
 
 const forActive = ref(null)
@@ -34,7 +42,7 @@ const items = ref(null)
 
 const fetchData = async () => {
   try {
-    const res = await api.post(`/instances/version`, generalStore.selectedEntity)
+    const res = await api.post(`/instances/version`, versionData.value)
     items.value = res.data
   } catch (err) {
     toast.add({ severity: 'error', detail: 'Не удалось найти версии', life: 3000 })
@@ -44,10 +52,11 @@ const fetchData = async () => {
 onMounted(() => {
   fetchData()
 })
+const versionDialog = ref(false)
 
 const openDetailsModal = (item: any) => {
-  generalStore.selectedEntity = item
-  dialogs.openDetailsDialog()
+  versionData.value = item
+  versionDialog.value = true
 }
 
 const save = async () => {
@@ -125,6 +134,15 @@ const save = async () => {
       <Button label="Отмена" @click="closeInformDialog" class="p-button-text" />
       <Button label="Подтвердить" @click="save" />
     </template>
+  </Dialog>
+
+  <Dialog v-model:visible="versionDialog" :style="{ width: '800px' }"
+          :dismissableMask="true"
+          :modal="true"
+          @hide="onHide"
+          header="Детальная информация"
+  >
+    <DetailsDialog :data="versionData" />
   </Dialog>
 </template>
 

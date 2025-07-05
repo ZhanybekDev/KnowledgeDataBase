@@ -113,6 +113,11 @@ const openVersionModal = (item: any) => {
   generalStore.selectedEntity = item
   dialogs.openVersionDialog()
 }
+
+const onHide = () => {
+  generalStore.clearSelectedEntity()
+  modelsStore.clearInitialData()
+}
 </script>
 
 <template>
@@ -211,12 +216,19 @@ const openVersionModal = (item: any) => {
     </template>
   </Card>
 
-  <DetailsDialog :data="generalStore.selectedEntity">
-    <Button label="Редактирование"
-            icon="pi pi-pencil"
-            @click="addRelatedInstance()"
-    />
-  </DetailsDialog>
+  <Dialog v-model:visible="dialogs.detailsDialog" :style="{ width: '800px' }"
+          :dismissableMask="true"
+          :modal="true"
+          @hide="onHide"
+          header="Детальная информация"
+  >
+    <DetailsDialog :data="generalStore.selectedEntity">
+      <Button label="Редактирование"
+              icon="pi pi-pencil"
+              @click="addRelatedInstance()"
+      />
+    </DetailsDialog>
+  </Dialog>
 
   <Dialog v-model:visible="dialogs.addItemDialog"
           header="Создание экземпляра" :style="{ width: '1200px' }" :modal="true">
@@ -227,7 +239,9 @@ const openVersionModal = (item: any) => {
   </Dialog>
 
   <DeleteDialog :deleteItem="deleteItem"/>
-  <VersionInstDialog v-if="dialogs.versionDialog"/>
+  <VersionInstDialog
+    :data="generalStore.selectedEntity"
+    v-if="dialogs.versionDialog"/>
 
   <Dialog v-model:visible="dialogs.addInstDialog"
           header="Создание экземпляра" :style="{ width: '1200px' }" :modal="true"

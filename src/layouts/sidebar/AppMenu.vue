@@ -9,6 +9,7 @@ const model = ref([
       { label: 'Модели', icon: 'pi pi-fw pi-table', to: '/settings/model' },
       { label: 'Экземпляры', icon: 'pi pi-fw pi-align-left', to: '/settings/instance' },
       { label: 'Представления', icon: 'pi pi-fw pi-objects-column', to: '/settings/performance' },
+      { label: 'Пользователи', icon: 'pi pi-fw pi-user', to: '/settings/user' },
       { label: 'Доступы', icon: 'pi pi-fw pi-users', to: '/settings/access' },
     ]
   }

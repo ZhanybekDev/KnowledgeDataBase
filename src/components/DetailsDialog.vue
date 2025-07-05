@@ -3,34 +3,21 @@ import DetailComponent from '@/components/DetailComponent.vue'
 import { useDialogStore } from '@/store/dialogStore.ts'
 import { useGeneralStore } from '@/store/generalStore.ts'
 import { ref } from 'vue'
-import { useModelsStore } from '@/store/modelsStore.ts'
 import { useToast } from 'primevue/usetoast'
 
 interface Props {
   data: any | null;
 }
 
-const toast = useToast()
 const props = defineProps<Props>()
+const toast = useToast()
 
 const selectedLanguage = ref('ru')
 const generalStore = useGeneralStore()
-const modelsStore = useModelsStore()
 const dialogs = useDialogStore()
-
-const onHide = () => {
-  generalStore.clearSelectedEntity()
-  modelsStore.clearInitialData()
-}
 </script>
 
 <template>
-  <Dialog v-model:visible="dialogs.detailsDialog" :style="{ width: '800px' }"
-          :dismissableMask="true"
-          :modal="true"
-          @hide="onHide"
-          header="Детальная информация"
-  >
     <div>
       <div class="flex justify-end">
         <div class="flex gap-2">
@@ -92,7 +79,6 @@ const onHide = () => {
         </div>
       </div>
     </div>
-  </Dialog>
 </template>
 
 <style scoped>

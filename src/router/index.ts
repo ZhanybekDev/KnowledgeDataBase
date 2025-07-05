@@ -33,13 +33,11 @@ const router = createRouter({
           path: 'performance',
           name: 'performance',
           component: () => import('@/views/settings/PerformanceCrud.vue'),
-          children: [
-            {
-              path: 'interface',
-              name: 'interface',
-              component: () => import('@/views/settings/PerformanceInterfacePage.vue')
-            }
-          ]
+        },
+        {
+          path: 'user',
+          name: 'user',
+          component: () => import('@/views/settings/UsersCrud.vue'),
         }
       ]
     },

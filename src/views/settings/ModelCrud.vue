@@ -102,7 +102,6 @@ const addRelatedModel = () => {
   dialogs.openAddItemDialog()
 }
 
-// Удаление
 function confirmDeleteItem(item: EntityModel) {
   generalStore.selectedEntity = item;
   dialogs.openDeleteDialog()
@@ -128,6 +127,11 @@ const openDetailsModal = (item: any) => {
 const openVersionModal = (item: any) => {
   generalStore.selectedEntity = item
   dialogs.openVersionDialog()
+}
+
+const onHide = () => {
+  generalStore.clearSelectedEntity()
+  modelsStore.clearInitialData()
 }
 
 onMounted(async () => {
@@ -219,22 +223,29 @@ onMounted(async () => {
     </template>
   </Card>
 
-  <DetailsDialog :data="generalStore.selectedEntity">
-    <Button label="Новое поколение"
-            icon="pi pi-plus"
-            @click="addRelatedModel()" />
-    <Button label="Создать экзепляр"
-            icon="pi pi-plus"
-            @click="addInstance()" />
-    <Button label="Скопировать поля"
-            severity="secondary"
-            icon="pi pi-copy"
-            @click="copyModel()" />
-    <Button severity="secondary"
-            label="Редактировать"
-            icon="pi pi-pencil"
-            @click="editModel()" />
-  </DetailsDialog>
+  <Dialog v-model:visible="dialogs.detailsDialog" :style="{ width: '800px' }"
+          :dismissableMask="true"
+          :modal="true"
+          @hide="onHide"
+          header="Детальная информация"
+  >
+    <DetailsDialog :data="generalStore.selectedEntity">
+      <Button label="Новое поколение"
+              icon="pi pi-plus"
+              @click="addRelatedModel()" />
+      <Button label="Создать экзепляр"
+              icon="pi pi-plus"
+              @click="addInstance()" />
+      <Button label="Скопировать поля"
+              severity="secondary"
+              icon="pi pi-copy"
+              @click="copyModel()" />
+      <Button severity="secondary"
+              label="Редактировать"
+              icon="pi pi-pencil"
+              @click="editModel()" />
+    </DetailsDialog>
+  </Dialog>
 
   <Dialog v-model:visible="dialogs.addItemDialog"
           :header="dialogTitle +  ` | ${mode}`" :style="{ width: '1200px' }" :modal="true"

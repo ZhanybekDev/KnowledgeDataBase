@@ -66,7 +66,7 @@ const closePropertyDialog = (type: 'string' | 'integer') => {
 const resetNewProperty = () => {
   newProperty.value = {
     key: '',
-    names: props.formData.value_localization.reduce((acc, lang) => {
+    names: props.formData.value_localization.reduce((acc: any, lang: string) => {
       acc[lang] = ''
       return acc
     }, {} as Record<string, string>),
@@ -79,11 +79,6 @@ const newProperty = ref({
   names: {} as Record<string, string>,
   accesses: [] as number[]
 })
-
-function onInput(e) {
-  const cleaned = e.target.value.replace(/[^A-Za-z]/g, '')
-  newProperty.value.name = cleaned
-}
 
 const removeProperty = (key: string) => {
   const { [key]: removed, ...rest } = props.formData.data
@@ -102,9 +97,9 @@ const addProperty = (type: 'string' | 'integer') => {
   }
 
   const langs = props.formData.value_localization
-  const name = Object.fromEntries(langs.map(lang => [lang, newProperty.value.names[lang] || '']))
+  const name = Object.fromEntries(langs.map((lang: string) => [lang, newProperty.value.names[lang] || '']))
   const value = type === 'string'
-    ? Object.fromEntries(langs.map(lang => [lang, null])) as Record<LangCode, null>
+    ? Object.fromEntries(langs.map((lang: string) => [lang, null]))
     : null
 
   props.formData.data[newProperty.value.key] = {
@@ -135,7 +130,7 @@ watch(() => props.formData.value_localization, (newLangs) => {
 
     const newName: Record<string, string> = {}
 
-    newLangs.forEach(lang => {
+    newLangs.forEach((lang: string) => {
       newName[lang] = prop.name?.[lang] ?? ''
     })
 
@@ -144,7 +139,7 @@ watch(() => props.formData.value_localization, (newLangs) => {
     if (prop.type === 'string') {
       const newValue: Record<string, string | null> = {}
 
-      newLangs.forEach(lang => {
+      newLangs.forEach((lang: string) => {
         newValue[lang] = prop.value?.[lang] ?? null
       })
 
@@ -225,7 +220,6 @@ onMounted(async () => {
       <div class="flex flex-col">
         <label for="stringKey" class="text-sm font-medium mb-1">Ключ</label>
         <InputText id="stringKey"
-                   :value-change="onInput"
                    v-model="newProperty.key" class="w-full" />
       </div>
 

@@ -3,16 +3,17 @@ import { computed, ref } from 'vue'
 import api from '@/api/axios.ts'
 import { useToast } from 'primevue/usetoast'
 import { initialModelData } from '@/utils/initial-data.ts'
+import type { IModel } from '@/types/model-interface.ts'
 
 export const useModelsStore = defineStore('models', () => {
-  let initialData = ref<any>({ ...initialModelData })
+  let initialData = ref<IModel>({ ...initialModelData })
 
   const clearInitialData = () => {
     initialData.value = { ...initialModelData }
   }
 
   const toast = useToast()
-  const models = ref<any[]>([])
+  const models = ref<IModel[]>([])
 
   const fetchAllModel = async () => {
     try {

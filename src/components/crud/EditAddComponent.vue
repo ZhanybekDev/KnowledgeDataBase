@@ -11,7 +11,7 @@ import { useModelsStore } from '@/store/modelsStore.ts'
 
 interface Props {
   id: any;
-  initialData: Ref<any>
+  initialData: any
   isValid: boolean
 }
 
@@ -75,7 +75,7 @@ onMounted(() => {
     <div class="flex flex-col space-y-2">
       <label for="title" class="text-sm font-medium text-gray-300">Заголовок</label>
       <InputText id="title" v-model="initialData.title"
-                 @update:modelValue="val => onUpdateTitle(val)"
+                 @update:modelValue="val => onUpdateTitle(val as string)"
                  class="w-full" />
     </div>
 

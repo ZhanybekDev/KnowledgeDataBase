@@ -75,7 +75,14 @@ const openDetailsModal = (item: any) => {
       </template>
     </Timeline>
   </Dialog>
-  <DetailsDialog :data="generalStore.selectedEntity"/>
+  <Dialog v-model:visible="dialogs.detailsDialog" :style="{ width: '800px' }"
+          :dismissableMask="true"
+          :modal="true"
+          @hide="onHide"
+          header="Детальная информация"
+  >
+    <DetailsDialog :data="generalStore.selectedEntity" />
+  </Dialog>
 </template>
 
 <style scoped>
